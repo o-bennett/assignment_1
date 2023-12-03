@@ -8,6 +8,7 @@ library(lubridate)
 library(glmnet)
 library(rpart)
 library(rpart.plot)
+library(devtools)
 
 setwd("C:/Users/Ollie/OneDrive - University of Warwick/Desktop/4th Year/Uni Work/Data Science/Assignment 1 EC349/EC349 Assignment")
 
@@ -15,7 +16,11 @@ load("yelp_review_small.Rda")
 load("yelp_user_small.Rda")
 business_data <- stream_in(file("yelp_academic_dataset_business.json"))
 
-#Merging datasets
+
+# Preparing Data ----------------------------------------------------------
+
+
+# Merging datasets
 merged_data <- merge(merge(review_data_small, user_data_small, by = "user_id"), business_data, by = "business_id")
 
 # Removing variables that won't be used in prediction
@@ -28,18 +33,12 @@ threshold <- nrow(merged_data) * 0.5
 merged_data_useful <- merged_data_useful %>% 
   select_if(~sum(is.na(.)) < threshold)
 
-#merged_data_useful <- merged_data_useful %>% 
- # select_if(~!is.numeric(.) | sum(. == 0, na.rm = TRUE) < threshold)
-
-#merged_data_useful <- merged_data_useful %>% 
- # select_if(~!is.character(.) | sum(. == "", na.rm = TRUE) < threshold)
-
-#merged_data_useful <- merged_data_useful %>% 
- # select_if(~!is.character(.) | sum(. == "None", na.rm = TRUE) < threshold)
-
 # Converting to factor types
 merged_data_useful$state <- factor(merged_data_useful$state)
 merged_data_useful$is_open <- factor(merged_data_useful$is_open)
+
+# Removing states with few reviews
+
 
 # Number of years elite, number of friends
 count_elite <- function(x) {
@@ -86,6 +85,15 @@ merged_data_useful$review_stars <- merged_data_useful$stars.x
 clean_data <- merged_data_useful %>% 
   select(-c(date, yelping_since, stars.x, categories))
 
+# Removing states with few reviews (<2)
+states_to_remove <- names(state_counts[state_counts <= 2])
+clean_data <- clean_data[!clean_data$state %in% states_to_remove, ]
+clean_data$state <- factor(clean_data$state)
+
+
+# Ridge & LASSO -----------------------------------------------------------
+
+
 # Converting factor variables to numerical for ridge/lasso
 numeric_df <- model.matrix(~ . - 1, data = clean_data)
 
@@ -94,12 +102,20 @@ numeric_df <- model.matrix(~ . - 1, data = clean_data)
 set.seed(1)
 train <- sample(1:nrow(clean_data), nrow(clean_data)-10000)
 ridge_train <- numeric_df[train,]
-ridgex_train <- ridge_train[,-82]
-ridgey_train <- ridge_train[,82]
-
 ridge_test <- numeric_df[-train,]
-ridgex_test <- ridge_test[,-82]
-ridgey_test <- ridge_test[,82]
+
+# Standardise the training data
+mean_ridge_train <- apply(ridge_train, 2, mean)
+sd_ridge_train <- apply(ridge_train, 2, sd)
+standardised_ridge_train <- scale(ridge_train, center = mean_ridge_train, scale = sd_ridge_train)
+
+ridgex_train <- standardised_ridge_train[,-82]
+ridgey_train <- standardised_ridge_train[,82]
+
+standardised_ridge_test <- scale(ridge_test, center = mean_ridge_train, scale = sd_ridge_train)
+
+ridgex_test <- standardised_ridge_test[,-82]
+ridgey_test <- standardised_ridge_test[,82]
 
 #Ridge with Cross-Validation
 cv.out <- cv.glmnet(as.matrix(ridgex_train), as.matrix(ridgey_train), alpha = 0, nfolds = 3)
@@ -121,6 +137,10 @@ LASSO.mod<-glmnet(ridgex_train, ridgey_train, alpha = 1, lambda = lambda_LASSO_c
 LASSO.pred <- predict(LASSO.mod, s = lambda_LASSO_cv, newx = as.matrix(ridgex_test))
 LASSO_MSE<- mean((LASSO.pred - ridgey_test) ^ 2)
 
+
+# OLS ---------------------------------------------------------------------
+
+
 # Split clean_data into test and training for OLS and trees
 OLS_train <- clean_data[train,]
 OLSx_train <- OLS_train[,-31]
@@ -134,6 +154,10 @@ OLSy_test <- OLS_test[,31]
 lm_review <- lm(review_stars ~ ., data = OLS_train)
 lm_review_predict<-predict(lm_review, newdata = OLSx_test)
 lm_review_test_MSE<-mean((lm_review_predict-OLSy_test)^2)
+
+
+# Trees -------------------------------------------------------------------
+
 
 # Converting reviews to categorical for randomly generated reviews and categorical tree
 categorical_data <- clean_data
@@ -168,23 +192,19 @@ class_tree_accuracy <- sum(class_tree_predict == categoricaly_test)/10000
 
 
 
-#KEEP VARIABLES WITH MANY 0 ENTRIES - could be a strong indicator
-#scrap variables with many NA or emptry entries
 
+# Exploratory Data Analytics - FOR R MARKDOWN (REMOVE!!!!!!!!!!!!!!!)
 
-#city variable is no good as quite a cities only have one review
-# Keep the state variable (factor)
-
-# have reactions as a fraction of total reactions - bad reviews with lots of reactions could have more good reactions than good reviews with less reactions just because they have been viewed more
-# add a new variable for total number of reactions
+# Histogram for distribution of review stars
+hist(merged_data$stars.x, breaks = seq(0.5, 5.5, by = 1), main = "Distribution of Reviews", xlab = "Stars", xaxt = "n")
+axis(1, at = 1:5, labels = 1:5)
 
 
 
+state_counts <- table(merged_data_useful$state)
+print(state_counts)
 
-# clean data
-# split into training and test
-# do ols to compare it - SKIP OLS - CAN JUSTIFY NOT INCLUDING IT (WE CARE ABOUT PRECITION NOT BIAS/INTERPRETABILITY)
-# ridge/lasso estimator + cross validation to find lambda?
-# use prediction trees
-# pick model with lowest mse
-# use model to predict test
+
+
+
+
