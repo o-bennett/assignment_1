@@ -1,0 +1,92 @@
+---
+title: "Assignment 1 - 2014247"
+author: "Oliver Bennett"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r source, echo = FALSE, message = FALSE, results = 'hide', warning = FALSE, cache = TRUE}
+source("C:R/EC349 Assignment 1 - 2014247.R")
+```
+## Methodology
+
+## Business Understanding
+
+## Data Understanding
+
+
+
+
+```{r review histogram, echo=FALSE, cache = TRUE}
+# Exploratory Data Analytics
+# Histogram for distribution of review stars
+hist(merged_data$stars.x, breaks = seq(0.5, 5.5, by = 1), main = "Distribution of Reviews", xlab = "Stars", xaxt = "n")
+axis(1, at = 1:5, labels = 1:5)
+```
+
+#### Column Names
+```{r column names, echo = FALSE, cache = TRUE}
+column_names <- colnames(merged_data)
+print(column_names)
+```
+
+
+
+## Data Preparation
+
+
+
+| Dataset | Description |
+|----|------------------|
+| `numerical_df` | Matrix containing only numerical variables. To be used for Ridge and LASSO models |
+| `clean_data` | Dataframe containing both numerical and factor type variables with the dependent variable `review_stars` as a numerical type. To be used for OLS and regression tree models |
+| `categorical_data` | Same as `clean_data` but `review_stars` is converted to a factor type. To be used for randomly generated reviews and classification tree models |
+
+
+
+
+
+
+## Modeling
+
+
+$\hat{\beta}^{OLS} = \arg\min_{\beta} \left\{ \sum_{i=1}^{n} (y_i - x_i^T\beta)^2 \right\}$.
+
+$\hat{\beta}^{Ridge} = \arg\min_{\beta} \left\{ \sum_{i=1}^{n} (y_i - x_i^T\beta)^2 + \lambda \sum_{j=1}^{p} \beta_j^2 \right\}$.
+
+$\hat{\beta}^{LASSO} = \arg\min_{\beta} \left\{ \sum_{i=1}^{n} (y_i - x_i^T\beta)^2 + \lambda \sum_{j=1}^{p} |\beta_j| \right\}$.
+
+
+
+
+
+## Evaluation
+
+
+#### MSE Evaluation
+| Model | Training MSE | Test MSE |
+|:--------:|:---------:|:---------:|
+| OLS | 1.176837 | 1.183622 |
+| Ridge | 0.5398293 | 0.5437694 |
+| <span style="color:blue">LASSO</span> | <span style="color:blue">0.5388094</span> | <span style="color:blue">0.5414782</span> |
+| Regression tree | 1.313129 | 1.313515 |
+|Randomly generated| 4.723367 | 4.6496 |
+
+#### Prediction Accuracy Evaluation
+| Model | Training Accuracy | Test Accuracy |
+|:--------:|:---------:|:---------:|
+| Randomly generated | 0.2006618 | 0.203 |
+|Classification tree| 0.5503822 | 0.5523 |
+
+
+
+
+
+
+## Deployment
+

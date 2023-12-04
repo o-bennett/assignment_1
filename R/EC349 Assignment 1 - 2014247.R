@@ -1,6 +1,7 @@
 cat("\014")
 rm(list=ls())
 
+library(conflicted)
 library(tidyverse)
 library(jsonlite)
 library(dplyr)
@@ -9,6 +10,7 @@ library(glmnet)
 library(rpart)
 library(rpart.plot)
 library(devtools)
+conflicts_prefer(dplyr::filter)
 
 setwd("C:/Users/Ollie/OneDrive - University of Warwick/Desktop/4th Year/Uni Work/Data Science/Assignment 1 EC349/EC349 Assignment")
 
@@ -53,7 +55,7 @@ merged_data_useful$elite <- sapply(merged_data_useful$elite, count_elite)
 count_friends <- function(x) {
   if (x == "None") {
     return(0)
-  } else {eu
+  } else {
     return(length(strsplit(x, ",")[[1]]))
   }
 }
@@ -86,6 +88,7 @@ clean_data <- merged_data_useful %>%
   select(-c(date, yelping_since, stars.x, categories))
 
 # Removing states with few reviews (<2)
+state_counts <- table(merged_data_useful$state)
 states_to_remove <- names(state_counts[state_counts <= 2])
 clean_data <- clean_data[!clean_data$state %in% states_to_remove, ]
 clean_data$state <- factor(clean_data$state)
@@ -109,17 +112,17 @@ mean_ridge_train <- apply(ridge_train, 2, mean)
 sd_ridge_train <- apply(ridge_train, 2, sd)
 standardised_ridge_train <- scale(ridge_train, center = mean_ridge_train, scale = sd_ridge_train)
 
-ridgex_train <- standardised_ridge_train[,-82]
-ridgey_train <- standardised_ridge_train[,82]
+ridgex_train <- standardised_ridge_train[,-75]
+ridgey_train <- standardised_ridge_train[,75]
 
 standardised_ridge_test <- scale(ridge_test, center = mean_ridge_train, scale = sd_ridge_train)
 
-ridgex_test <- standardised_ridge_test[,-82]
-ridgey_test <- standardised_ridge_test[,82]
+ridgex_test <- standardised_ridge_test[,-75]
+ridgey_test <- standardised_ridge_test[,75]
 
 #Ridge with Cross-Validation
 cv.out <- cv.glmnet(as.matrix(ridgex_train), as.matrix(ridgey_train), alpha = 0, nfolds = 3)
-plot(cv.out)
+#plot(cv.out)
 lambda_ridge_cv <- cv.out$lambda.min
 
 ridge.mod<-glmnet(ridgex_train, ridgey_train, alpha = 0, lambda = lambda_ridge_cv, thresh = 1e-12)
@@ -127,15 +130,21 @@ ridge.mod<-glmnet(ridgex_train, ridgey_train, alpha = 0, lambda = lambda_ridge_c
 ridge.pred <- predict(ridge.mod, s = lambda_ridge_cv, newx = as.matrix(ridgex_test))
 ridge_MSE<- mean((ridge.pred - ridgey_test) ^ 2)
 
+ridge_train_pred <- predict(ridge.mod, s = lambda_ridge_cv, newx = as.matrix(ridgex_train))
+ridge_train_MSE <- mean((ridge_train_pred - ridgey_train) ^ 2)
+
 #LASSO with Cross-Validation
 cv.out <- cv.glmnet(as.matrix(ridgex_train), as.matrix(ridgey_train), alpha = 1, nfolds = 3)
-plot(cv.out)
+#plot(cv.out)
 lambda_LASSO_cv <- cv.out$lambda.min
 
 LASSO.mod<-glmnet(ridgex_train, ridgey_train, alpha = 1, lambda = lambda_LASSO_cv, thresh = 1e-12)
 
 LASSO.pred <- predict(LASSO.mod, s = lambda_LASSO_cv, newx = as.matrix(ridgex_test))
 LASSO_MSE<- mean((LASSO.pred - ridgey_test) ^ 2)
+
+LASSO_train_pred <- predict(LASSO.mod, s = lambda_LASSO_cv, newx = as.matrix(ridgex_train))
+LASSO_train_MSE <- mean((LASSO_train_pred - ridgey_train) ^ 2)
 
 
 # OLS ---------------------------------------------------------------------
@@ -154,6 +163,10 @@ OLSy_test <- OLS_test[,31]
 lm_review <- lm(review_stars ~ ., data = OLS_train)
 lm_review_predict<-predict(lm_review, newdata = OLSx_test)
 lm_review_test_MSE<-mean((lm_review_predict-OLSy_test)^2)
+
+lm_review_train_predict <- predict(lm_review, newdata = OLSx_train)
+lm_review_train_MSE <- mean((lm_review_train_predict - OLSy_train) ^ 2)
+
 
 
 # Trees -------------------------------------------------------------------
@@ -178,16 +191,27 @@ random_reviews <- sample(1:5, 10000, replace = TRUE)
 random_mse <- mean((random_reviews - OLSy_test) ^ 2)
 random_accuracy <- sum(random_reviews == categoricaly_test)/10000
 
+set.seed(3)
+random_reviews_train <- sample(1:5, length(categoricaly_train), replace = TRUE)
+random_train_mse <- mean((random_reviews_train - OLSy_train) ^ 2)
+random_train_accuracy <- sum(random_reviews_train == categoricaly_train) / length(categoricaly_train)
+
 # Regression tree
 reg_tree <- rpart(review_stars ~ ., data = OLS_train)
 reg_tree_predict <- predict(reg_tree, OLSx_test)
 reg_tree_predict_mse <- mean((reg_tree_predict - OLSy_test) ^ 2)
+
+reg_tree_train_predict <- predict(reg_tree, OLSx_train)
+reg_tree_train_MSE <- mean((reg_tree_train_predict - OLSy_train) ^ 2)
 
 
 # Classification tree
 class_tree <- rpart(review_stars ~ ., data = categorical_train)
 class_tree_predict <- predict(class_tree, categoricalx_test, type = 'class')
 class_tree_accuracy <- sum(class_tree_predict == categoricaly_test)/10000
+
+class_tree_train_predict <- predict(class_tree, categoricalx_train, type = 'class')
+class_tree_train_accuracy <- sum(class_tree_train_predict == categoricaly_train) / length(categoricaly_train)
 
 
 
@@ -196,15 +220,15 @@ class_tree_accuracy <- sum(class_tree_predict == categoricaly_test)/10000
 # Exploratory Data Analytics - FOR R MARKDOWN (REMOVE!!!!!!!!!!!!!!!)
 
 # Histogram for distribution of review stars
-hist(merged_data$stars.x, breaks = seq(0.5, 5.5, by = 1), main = "Distribution of Reviews", xlab = "Stars", xaxt = "n")
-axis(1, at = 1:5, labels = 1:5)
+#hist(merged_data$stars.x, breaks = seq(0.5, 5.5, by = 1), main = "Distribution of Reviews", xlab = "Stars", xaxt = "n")
+#axis(1, at = 1:5, labels = 1:5)
 
 
 
-state_counts <- table(merged_data_useful$state)
-print(state_counts)
 
+#print(state_counts)
 
-
+#column_names <- colnames(merged_data)
+#print(column_names)
 
 
