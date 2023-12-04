@@ -43,11 +43,19 @@ print(column_names)
 
 | Dataset | Description |
 |----|------------------|
-| `numerical_df` | Matrix containing only numerical variables. To be used for Ridge and LASSO models |
+| `numeric_df` | Matrix containing only numerical variables. To be used for Ridge and LASSO models |
 | `clean_data` | Dataframe containing both numerical and factor type variables with the dependent variable `review_stars` as a numerical type. To be used for OLS and regression tree models |
 | `categorical_data` | Same as `clean_data` but `review_stars` is converted to a factor type. To be used for randomly generated reviews and classification tree models |
 
 
+
+
+| Contrasts | Ridge Test MSE | LASSO Test MSE |
+|--------|:---------:|:---------:|
+| Treatment (dummy) for `review_day_of week`, `review_month`, `review_year` | 0.54380164 | 0.5415141 |
+| Polynomial for `review_day_of week`, treatment for `review_month` and `review_year` | 0.5437694 | 0.5414782 |
+| Polynomial for `review_day_of week` and `review_month`, treatment for `review_year` | 0.54377904 | <span style="color:blue">0.54139661</span> |
+| Polynomial for `review_day_of week`,`review_month` and `review_year` | 0.5437798 | 0.5416604 |
 
 
 

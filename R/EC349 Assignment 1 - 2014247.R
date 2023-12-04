@@ -79,6 +79,7 @@ merged_data_useful$review_day_of_week <- wday(merged_data_useful$date, label = T
 
 merged_data_useful$review_year <- factor(merged_data_useful$review_year)
 merged_data_useful$review_month <- factor(merged_data_useful$review_month)
+merged_data_useful$review_day_of_week <- factor(merged_data_useful$review_day_of_week)
 
 merged_data_useful$review_stars <- merged_data_useful$stars.x
 
@@ -98,8 +99,10 @@ clean_data$state <- factor(clean_data$state)
 
 
 # Converting factor variables to numerical for ridge/lasso
-numeric_df <- model.matrix(~ . - 1, data = clean_data)
-
+numeric_df <- model.matrix(~ . - 1, data = clean_data, 
+                           contrasts = list(review_day_of_week = "contr.poly",
+                                            review_month = "contr.poly",
+                                            review_year = "contr.treatment"))
 
 # Split numerical data into test and training for Ridge and LASSO
 set.seed(1)
