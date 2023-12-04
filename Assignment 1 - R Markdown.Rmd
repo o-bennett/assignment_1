@@ -1,6 +1,6 @@
 ---
-title: "Assignment 1 - 2014247"
-author: "Oliver Bennett"
+title: "Assignment 1"
+author: "Oliver Bennett (2014247)"
 date: "`r Sys.Date()`"
 output: html_document
 ---
@@ -13,31 +13,64 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r source, echo = FALSE, message = FALSE, results = 'hide', warning = FALSE, cache = TRUE}
 source("C:R/EC349 Assignment 1 - 2014247.R")
 ```
+
 ## Methodology
+
+In this assignment, I chose to follow the Cross-Industry Standard Process for Data Mining (CRISP-DM) methodology. CRISP-DM offers a structured approach, split into six stages: business understanding, data understanding, data preparation, modelling, evaluation, and deployment. I decided on CRISP-DM, due to its iterative nature and reputation as an industry-proven comprehensive approach to managing data science projects. The iterative nature was crucial in the development of my model as it allowed me to continually refine my process based on evolving insights. The structured approach was also key in the completion of this assignment. The business and data understanding stages were crucial in framing the problem and informing my choice of predictive models. In the modelling phase I iteratively tested and refined these models, gaining insights that allowed me to better prepare the data, and the evaluation phase allowed me to compare the performance of the different models.
+
+<p align="center">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/CRISP-DM_Process_Diagram.png" width="400" />
+</p>
+
+
 
 ## Business Understanding
 
+[yelp.com](yelp.com) is a website that publishes crowd-sourced reviews about businesses. This project aims to use information on users, reviews, and businesses on [yelp.com](yelp.com) to predict how users like different establishments. The goal of this project is to create a model that predicts the number of stars that reviews gave, significantly more accurately than benchmark models. These benchmark models will be an Ordinary Least Squares (OLS) model for linear estimation models and a randomly generated review model for classification prediction models. This project will follow the six stages of the CRISP-DM methodology to achieve this.
+
 ## Data Understanding
 
+A strong understanding of the available data is crucial in identifying which variables are relevant for prediction, assessing the quality of data, and guiding the selection of the most appropriate modelling techniques. 5 data sets were provided for this assignment: data on the businesses, user reviews, user “check-ins”, users and user tips. Using information available on the datasets from the [Yelp website]( https://www.yelp.com/dataset/documentation/main) I identified that only the datasets on businesses, user reviews, and users would be necessary for predicting reviews, and merged these datasets into one dataframe `merged_data`. Using this dataframe I was able to gain insights into the available data, such as the number of observations.
 
+#### Number of Observations
 
+```{r , echo = FALSE, cache = TRUE}
+num_observations <- nrow(merged_data)
+print(num_observations)
+```
+
+I was also able to perform visualisation techniques to view qualities such as the distribution of reviews.
+
+#### Distribution of Reviews
 
 ```{r review histogram, echo=FALSE, cache = TRUE}
 # Exploratory Data Analytics
 # Histogram for distribution of review stars
-hist(merged_data$stars.x, breaks = seq(0.5, 5.5, by = 1), main = "Distribution of Reviews", xlab = "Stars", xaxt = "n")
+hist(merged_data$stars.x, breaks = seq(0.5, 5.5, by = 1), main = "", xlab = "Stars", xaxt = "n")
 axis(1, at = 1:5, labels = 1:5)
 ```
 
+By further consulting the [Yelp website]( https://www.yelp.com/dataset/documentation/main) and analysing the `merged_data` dataframe, I was also able to gain a deeper understanding of the available variables.
+
 #### Column Names
+
 ```{r column names, echo = FALSE, cache = TRUE}
 column_names <- colnames(merged_data)
 print(column_names)
 ```
 
+Based on the available data and the goal of the assignment, I could 
+
+- model selection
+- categorical and numerical...
+
 
 
 ## Data Preparation
+
+
+
+
 
 
 
@@ -50,15 +83,71 @@ print(column_names)
 
 
 
+| Variable | Type (`clean_data`) | Description |
+|:--:|:--:|---------------|
+| `useful.x` | Numeric |  |
+| `funny.x` | Numeric |  |
+| `cool.x` | Numeric |  |
+| `review_count.x` | Numeric |  |
+| `useful.y` | Numeric |  |
+| `funny.y` | Numeric |  |
+| `cool.y` | Numeric |  |
+| `elite` | Numeric |  |
+| `friends` | Numeric |  |
+| `fans` | Numeric |  |
+| `average_stars` | Numeric |  |
+| `compliment_hot` | Numeric |  |
+| `compliment_more` | Numeric |  |
+| `compliment_profile` | Numeric |  |
+| `compliment_cute` | Numeric |  |
+| `compliment_list` | Numeric |  |
+| `compliment_note` | Numeric |  |
+| `compliment_plain` | Numeric |  |
+| `compliment_cool` | Numeric |  |
+| `compliment_funny` | Numeric |  |
+| `compliment_writer` | Numeric |  |
+| `compliment_photos` | Numeric |  |
+| `state` | Factor(14 levels)  |  |
+| `stars.y` | Numeric |  |
+| `review_count.y` | Numeric |  |
+| `is_open` | Numeric |  |
+| `account_age` | Numeric |  |
+| `review_year` | Factor (18 levels) |  |
+| `review_month` | Factor (12 levels) |  |
+| `review_day_of_week` | Factor (7 levels) |  |
+| `review_stars` | Numeric |  |
+
+
+
+
+
+
+
+Many of these changes to the variables were made iteratively
+- keeping variables with >50% 0 values
+- removed some state observations
+- 
+
+#### Number of Reviews by State
+
+```{r state counts, echo = FALSE, cache = TRUE}
+library(knitr)
+transposed_state_counts <- t(state_counts)
+kable(transposed_state_counts)
+```
+
+- examined numeric_df - weekdays had automatically been converted to polynomical contrast and month and year were kept as treatment
+- tried different combinations to determine which combination had yielded the greatest predictive power
+
+
 | Contrasts | Ridge Test MSE | LASSO Test MSE |
 |--------|:---------:|:---------:|
 | Treatment (dummy) for `review_day_of week`, `review_month`, `review_year` | 0.54380164 | 0.5415141 |
 | Polynomial for `review_day_of week`, treatment for `review_month` and `review_year` | 0.5437694 | 0.5414782 |
-| Polynomial for `review_day_of week` and `review_month`, treatment for `review_year` | 0.54377904 | <span style="color:blue">0.54139661</span> |
+| <span style="color:blue">Polynomial for `review_day_of week` and `review_month`, treatment for `review_year`</span> | 0.54377904 | <span style="color:blue">0.54139661</span> |
 | Polynomial for `review_day_of week`,`review_month` and `review_year` | 0.5437798 | 0.5416604 |
 
-
-
+- Based on the results I went with the third option as this had the lowest MSE (LASSO)
 
 ## Modeling
 

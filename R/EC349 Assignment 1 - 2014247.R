@@ -11,6 +11,7 @@ library(rpart)
 library(rpart.plot)
 library(devtools)
 conflicts_prefer(dplyr::filter)
+library(knitr)
 
 setwd("C:/Users/Ollie/OneDrive - University of Warwick/Desktop/4th Year/Uni Work/Data Science/Assignment 1 EC349/EC349 Assignment")
 
@@ -219,19 +220,5 @@ class_tree_train_accuracy <- sum(class_tree_train_predict == categoricaly_train)
 
 
 
-
-# Exploratory Data Analytics - FOR R MARKDOWN (REMOVE!!!!!!!!!!!!!!!)
-
-# Histogram for distribution of review stars
-#hist(merged_data$stars.x, breaks = seq(0.5, 5.5, by = 1), main = "Distribution of Reviews", xlab = "Stars", xaxt = "n")
-#axis(1, at = 1:5, labels = 1:5)
-
-
-
-
-#print(state_counts)
-
-#column_names <- colnames(merged_data)
-#print(column_names)
 
 
