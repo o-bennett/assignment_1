@@ -40,9 +40,6 @@ merged_data_useful <- merged_data_useful %>%
 merged_data_useful$state <- factor(merged_data_useful$state)
 merged_data_useful$is_open <- factor(merged_data_useful$is_open)
 
-# Removing states with few reviews
-
-
 # Number of years elite, number of friends
 count_elite <- function(x) {
   if (x == "") {
@@ -107,48 +104,71 @@ numeric_df <- model.matrix(~ . - 1, data = clean_data,
 
 # Split numerical data into test and training for Ridge and LASSO
 set.seed(1)
-train <- sample(1:nrow(clean_data), nrow(clean_data)-10000)
+train <- sample(1:nrow(clean_data), nrow(clean_data) - 10000)
 ridge_train <- numeric_df[train,]
 ridge_test <- numeric_df[-train,]
 
-# Standardise the training data
-mean_ridge_train <- apply(ridge_train, 2, mean)
-sd_ridge_train <- apply(ridge_train, 2, sd)
-standardised_ridge_train <- scale(ridge_train, center = mean_ridge_train, scale = sd_ridge_train)
+# Separate predictors and target variable
+ridgex_train <- ridge_train[,-75]
+ridgey_train <- ridge_train[,75]
+ridgex_test <- ridge_test[,-75]
+ridgey_test <- ridge_test[,75]
 
-ridgex_train <- standardised_ridge_train[,-75]
-ridgey_train <- standardised_ridge_train[,75]
-
-standardised_ridge_test <- scale(ridge_test, center = mean_ridge_train, scale = sd_ridge_train)
-
-ridgex_test <- standardised_ridge_test[,-75]
-ridgey_test <- standardised_ridge_test[,75]
+# Standardise only the predictor variables
+mean_ridgex_train <- apply(ridgex_train, 2, mean)
+sd_ridgex_train <- apply(ridgex_train, 2, sd)
+standardised_ridgex_train <- scale(ridgex_train, center = mean_ridgex_train, scale = sd_ridgex_train)
+standardised_ridgex_test <- scale(ridgex_test, center = mean_ridgex_train, scale = sd_ridgex_train)
 
 #Ridge with Cross-Validation
-cv.out <- cv.glmnet(as.matrix(ridgex_train), as.matrix(ridgey_train), alpha = 0, nfolds = 3)
-#plot(cv.out)
-lambda_ridge_cv <- cv.out$lambda.min
+cv.out_ridge <- cv.glmnet(as.matrix(ridgex_train), as.matrix(ridgey_train), alpha = 0, nfolds = 3)
+lambda_ridge_cv <- cv.out_ridge$lambda.min
 
 ridge.mod<-glmnet(ridgex_train, ridgey_train, alpha = 0, lambda = lambda_ridge_cv, thresh = 1e-12)
 
 ridge.pred <- predict(ridge.mod, s = lambda_ridge_cv, newx = as.matrix(ridgex_test))
 ridge_MSE<- mean((ridge.pred - ridgey_test) ^ 2)
 
+# MSE in training set
 ridge_train_pred <- predict(ridge.mod, s = lambda_ridge_cv, newx = as.matrix(ridgex_train))
 ridge_train_MSE <- mean((ridge_train_pred - ridgey_train) ^ 2)
 
 #LASSO with Cross-Validation
-cv.out <- cv.glmnet(as.matrix(ridgex_train), as.matrix(ridgey_train), alpha = 1, nfolds = 3)
-#plot(cv.out)
-lambda_LASSO_cv <- cv.out$lambda.min
+cv.out_LASSO <- cv.glmnet(as.matrix(ridgex_train), as.matrix(ridgey_train), alpha = 1, nfolds = 3)
+lambda_LASSO_cv <- cv.out_LASSO$lambda.min
 
 LASSO.mod<-glmnet(ridgex_train, ridgey_train, alpha = 1, lambda = lambda_LASSO_cv, thresh = 1e-12)
 
 LASSO.pred <- predict(LASSO.mod, s = lambda_LASSO_cv, newx = as.matrix(ridgex_test))
 LASSO_MSE<- mean((LASSO.pred - ridgey_test) ^ 2)
 
+# MSE in training set
 LASSO_train_pred <- predict(LASSO.mod, s = lambda_LASSO_cv, newx = as.matrix(ridgex_train))
 LASSO_train_MSE <- mean((LASSO_train_pred - ridgey_train) ^ 2)
+
+# Rounded Ridge and LASSO models
+rounded_ridge.pred <- round(ridge.pred)
+rounded_LASSO.pred <- round(LASSO.pred)
+
+# MSE in test set
+ridge_rounded_MSE <- mean((rounded_ridge.pred - ridgey_test) ^ 2)
+LASSO_rounded_MSE <- mean((rounded_LASSO.pred - ridgey_test) ^ 2)
+
+# Accuracy for Rounded Ridge and LASSO models in test set
+rounded_ridge_accuracy <- mean(rounded_ridge.pred == ridgey_test)
+rounded_LASSO_accuracy <- mean(rounded_LASSO.pred == ridgey_test)
+
+# Rounded Ridge and LASSO models for training set
+rounded_ridge_train_pred <- round(ridge_train_pred)
+rounded_LASSO_train_pred <- round(LASSO_train_pred)
+
+# MSE for Rounded Ridge and LASSO models in training set
+rounded_ridge_train_MSE <- mean((rounded_ridge_train_pred - ridgey_train) ^ 2)
+rounded_LASSO_train_MSE <- mean((rounded_LASSO_train_pred - ridgey_train) ^ 2)
+
+# Accuracy for Rounded Ridge and LASSO models in training set
+rounded_ridge_train_accuracy <- mean(rounded_ridge_train_pred == ridgey_train)
+rounded_LASSO_train_accuracy <- mean(rounded_LASSO_train_pred == ridgey_train)
 
 
 # OLS ---------------------------------------------------------------------

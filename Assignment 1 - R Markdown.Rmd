@@ -14,9 +14,53 @@ knitr::opts_chunk$set(echo = TRUE)
 source("C:R/EC349 Assignment 1 - 2014247.R")
 ```
 
+## Tabula statement
+
+We're part of an academic community at Warwick.
+
+Whether studying, teaching, or researching, we’re all taking part in an expert conversation which must meet standards of academic integrity. When we all meet these standards, we can take pride in our own academic achievements, as individuals and as an academic community.
+
+Academic integrity means committing to honesty in academic work, giving credit where we've used others' ideas and being proud of our own achievements.
+
+In submitting my work I confirm that:
+
+1. I have read the guidance on academic integrity provided in the Student Handbook and understand the University regulations in relation to Academic Integrity. I am aware of the potential consequences of Academic Misconduct.
+
+2. I declare that the work is all my own, except where I have stated otherwise.
+
+3. No substantial part(s) of the work submitted here has also been submitted by me in other credit bearing assessments courses of study (other than in certain cases of a resubmission of a piece of work), and I acknowledge that if this has been done this may lead to an appropriate sanction.
+
+4. Where a generative Artificial Intelligence such as ChatGPT has been used I confirm I have abided by both the University guidance and specific requirements as set out in the Student Handbook and the Assessment brief. I have clearly acknowledged the use of any generative Artificial Intelligence in my submission, my reasoning for using it and which generative AI (or AIs) I have used. Except where indicated the work is otherwise entirely my own.
+
+5. I understand that should this piece of work raise concerns requiring investigation in relation to any of points above, it is possible that other work I have submitted for assessment will be checked, even if marks (provisional or confirmed) have been published.
+
+6. Where a proof-reader, paid or unpaid was used, I confirm that the proofreader was made aware of and has complied with the University’s proofreading policy.
+
+7. I consent that my work may be submitted to Turnitin or other analytical technology. I understand the use of this service (or similar), along with other methods of maintaining the integrity of the academic process, will help the University uphold academic standards and assessment fairness.
+
+Privacy statement
+
+The data on this form relates to your submission of coursework. The date and time of your submission, your identity, and the work you have submitted will be stored. We will only use this data to administer and record your coursework submission.
+
+Related articles
+
+[Reg. 11 Academic Integrity (from 4 Oct 2021)](https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwarwick.ac.uk%2Fservices%2Fgov%2Fcalendar%2Fsection2%2Fregulations%2Facademic_integrity%2F&data=05%7C01%7COliver.Bennett.1%40warwick.ac.uk%7C4dd142f8cc154001823908dbf19221e9%7C09bacfbd47ef446592653546f2eaf6bc%7C0%7C0%7C638369382184961738%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=u661a0PI1LD1FJkpCa3TbxyDKOSilXIgywmEq7nRrFA%3D&reserved=0)
+
+[Guidance on Regulation 11](https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwarwick.ac.uk%2Fservices%2Faro%2Fdar%2Fquality%2Faz%2Facintegrity%2Fframework%2Fguidancereg11%2F&data=05%7C01%7COliver.Bennett.1%40warwick.ac.uk%7C4dd142f8cc154001823908dbf19221e9%7C09bacfbd47ef446592653546f2eaf6bc%7C0%7C0%7C638369382184970867%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=fyIOHxNjiYyCT3SLjH1ZCPR5O4cIpuZ35qVno%2BBA25Q%3D&reserved=0)
+
+[Proofreading Policy](https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwarwick.ac.uk%2Fservices%2Faro%2Fdar%2Fquality%2Fcategories%2Fexaminations%2Fpolicies%2Fv_proofreading%2F&data=05%7C01%7COliver.Bennett.1%40warwick.ac.uk%7C4dd142f8cc154001823908dbf19221e9%7C09bacfbd47ef446592653546f2eaf6bc%7C0%7C0%7C638369382184977389%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=zhp1VEUsWofNTxkouyprL1%2FHSD5guqYjMxo4vvMtQsA%3D&reserved=0)
+
+[Education Policy and Quality Team](https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwarwick.ac.uk%2Fservices%2Faro%2Fdar%2Fquality%2Faz%2Facintegrity%2Fframework%2Fguidancereg11%2F&data=05%7C01%7COliver.Bennett.1%40warwick.ac.uk%7C4dd142f8cc154001823908dbf19221e9%7C09bacfbd47ef446592653546f2eaf6bc%7C0%7C0%7C638369382184983755%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=dnqdD5algYtO8rCT5RKNSqqY8Thzs9crnW8lVdnq0vs%3D&reserved=0)
+
+[Academic Integrity (warwick.ac.uk)](https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwarwick.ac.uk%2Fstudents%2Flearning-experience%2Facademic_integrity&data=05%7C01%7COliver.Bennett.1%40warwick.ac.uk%7C4dd142f8cc154001823908dbf19221e9%7C09bacfbd47ef446592653546f2eaf6bc%7C0%7C0%7C638369382184990089%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=P9qABE735BU0TQMBXqyP2jB3%2Bvqb0Rm9Uy9fdhPq5K0%3D&reserved=0)
+
+This is the end of the statement to be included.
+
 ## Methodology
 
-In this assignment, I chose to follow the Cross-Industry Standard Process for Data Mining (CRISP-DM) methodology. CRISP-DM offers a structured approach, split into six stages: business understanding, data understanding, data preparation, modelling, evaluation, and deployment. I decided on CRISP-DM, due to its iterative nature and reputation as an industry-proven comprehensive approach to managing data science projects. The iterative nature was crucial in the development of my model as it allowed me to continually refine my process based on evolving insights. The structured approach was also key in the completion of this assignment. The business and data understanding stages were crucial in framing the problem and informing my choice of predictive models. In the modelling phase I iteratively tested and refined these models, gaining insights that allowed me to better prepare the data, and the evaluation phase allowed me to compare the performance of the different models.
+In this assignment, I chose to follow the Cross-Industry Standard Process for Data Mining (CRISP-DM) methodology. CRISP-DM offers a structured approach, split into six stages: business understanding, data understanding, data preparation, modelling, evaluation, and deployment. I decided on CRISP-DM, due to its iterative nature and reputation as an industry-proven comprehensive approach to managing data science projects. The iterative nature was crucial in the development of my model as it allowed me to continually refine my process based on evolving insights. The structured approach was also key in the completion of this assignment. The business and data understanding stages were crucial in framing the problem and guiding my choices of variables and models. In the modelling phase I iteratively tested and refined these models, gaining insights that allowed me to better prepare the data, and the evaluation phase allowed me to compare the performance of the different models.
+
+#### CRISP-DM
 
 <p align="center">
     <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/CRISP-DM_Process_Diagram.png" width="400" />
@@ -26,11 +70,11 @@ In this assignment, I chose to follow the Cross-Industry Standard Process for Da
 
 ## Business Understanding
 
-[yelp.com](yelp.com) is a website that publishes crowd-sourced reviews about businesses. This project aims to use information on users, reviews, and businesses on [yelp.com](yelp.com) to predict how users like different establishments. The goal of this project is to create a model that predicts the number of stars that reviews gave, significantly more accurately than benchmark models. These benchmark models will be an Ordinary Least Squares (OLS) model for linear estimation models and a randomly generated review model for classification prediction models. This project will follow the six stages of the CRISP-DM methodology to achieve this.
+[yelp.com](yelp.com) is a website that publishes crowd-sourced reviews about businesses. This project aims to use information on users, reviews, and businesses on [yelp.com](yelp.com) to predict how users like different establishments. The goal of this project is to create a model that accuratly predicts the number of stars that reviews gave and I will follow the six stages of the CRISP-DM methodology to achieve this.
 
 ## Data Understanding
 
-A strong understanding of the available data is crucial in identifying which variables are relevant for prediction, assessing the quality of data, and guiding the selection of the most appropriate modelling techniques. 5 data sets were provided for this assignment: data on the businesses, user reviews, user “check-ins”, users and user tips. Using information available on the datasets from the [Yelp website]( https://www.yelp.com/dataset/documentation/main) I identified that only the datasets on businesses, user reviews, and users would be necessary for predicting reviews, and merged these datasets into one dataframe `merged_data`. Using this dataframe I was able to gain insights into the available data, such as the number of observations.
+A strong understanding of the available data is crucial in identifying which variables are relevant for prediction, assessing the quality of data, and guiding the selection of the most appropriate modelling techniques. 5 data sets were provided for this assignment: data on the businesses, user reviews, user “check-ins”, users and user tips. Using information available on the datasets from the [Yelp website]( https://www.yelp.com/dataset/documentation/main), I identified that only the datasets on businesses, user reviews, and users would be necessary for predicting reviews, and I merged these datasets into one dataframe `merged_data`. Using this dataframe I was able to gain insights into the available data, such as the number of observations.
 
 #### Number of Observations
 
@@ -39,7 +83,7 @@ num_observations <- nrow(merged_data)
 print(num_observations)
 ```
 
-I was also able to perform visualisation techniques to view qualities such as the distribution of reviews.
+I was also able to perform visualisation techniques to view characteristics such as the distribution of reviews.
 
 #### Distribution of Reviews
 
@@ -59,20 +103,57 @@ column_names <- colnames(merged_data)
 print(column_names)
 ```
 
-Based on the available data and the goal of the assignment, I could 
-
-- model selection
-- categorical and numerical...
-
-
+Based on the available data and the predictive goal of the assignment, I chose to create OLS, Ridge, LASSO, regression tree and classification tree models. The use of a classification tree model makes the most sense as the number of stars in a review is categorical - users can only give a whole number of stars from 1-5. However, the other models can also be used as the number of stars is still a numerical variable.
 
 ## Data Preparation
 
+When preparing the data for modelling, I removed several variables including string type variables such as `business.id`, `name.x` and `text`, as my models would only work if the variables were either numerical or factor type. I then removed variables such as `city` and `categories`, as while these could be converted to factor types, when I did so they had very high levels (1000+ and 48000+ respectively) and so would not be useful in predictive models. In addition, I removed variables which had a high percentage of *NA* observations (>50%) as these also would not be useful in prediction. 
 
+I also modified certain variables so that they could be used in the predictive models. Using the 'lubridate' package on the string type `date` variable, I created factor variables for the year, month and day of the week that the reviews were written. From the `yelping_since` variable, I also calculated the number of days between the account being created and the review written and deleted observations with a negative number of days, as this would obviously be due to a error. Finally, I converted `state` to a factor variable. After these changes I was left with a `clean_data` dataframe that contained 31 unique variables, as seen below:
 
+#### Variables Description
 
+| Variable | Type (in `clean_data`) | Description |
+|:----:|:----:|---------|
+| `useful.x` | Numeric (integer) | Number of useful votes sent my the user |
+| `funny.x` | Numeric (integer) | Number of funny votes sent my the user |
+| `cool.x` | Numeric (integer) | Number of cool votes sent my the user |
+| `review_count.x` | Numeric (integer) | Number of reviews the user has written |
+| `useful.y` | Numeric (integer) | Number of useful votes the review received |
+| `funny.y` | Numeric (integer) | Number of funny votes the review received |
+| `cool.y` | Numeric (integer) | Number of cool votes the review received |
+| `elite` | Numeric (integer) | Number of years the user was elite |
+| `friends` | Numeric (integer) | Number of friends the user has |
+| `fans` | Numeric (integer) | Number of fans the user has |
+| `average_stars` | Numeric (float) | Average rating of all reviews written by the user |
+| `compliment_hot` | Numeric (integer) | Number of hot compliments received by the user |
+| `compliment_more` | Numeric (integer) | Number of more compliments received by the user |
+| `compliment_profile` | Numeric (integer) | Number of profile compliments received by the user |
+| `compliment_cute` | Numeric (integer) | Number of cute compliments received by the user |
+| `compliment_list` | Numeric (integer) | Number of list compliments received by the user |
+| `compliment_note` | Numeric (integer) | Number of note compliments received by the user |
+| `compliment_plain` | Numeric (integer) | Number of plain compliments received by the user |
+| `compliment_cool` | Numeric (integer) | Number of cool compliments received by the user |
+| `compliment_funny` | Numeric (integer) | Number of funny compliments received by the user |
+| `compliment_writer` | Numeric (integer) | Number of writer compliments received by the user |
+| `compliment_photos` | Numeric (integer) | Number of photo compliments received by the user |
+| `state` | Factor(14 levels) | State that the business is located in |
+| `stars.y` | Numeric (float) | Star rating of the business, rounded to half stars |
+| `review_count.y`| Numeric (integer) | Number of reviews written about the business |
+| `is_open` | Numeric (binary) | 0 if the business is closed, 1 if open |
+| `account_age` | Numeric (integer) | Age of account (days) when the review was posted |
+| `review_year` | Factor (18 levels) | Year  the review was posted |
+| `review_month` | Factor (12 levels) | Month the review was posted |
+| `review_day_of_week` | Factor (7 levels) | Day of the week the review was posted |
+| `review_stars` | Numeric (integer) | Stars given in the review (the dependent variable) |
 
+#### Summary of Variables
 
+```{r , echo = FALSE, cache = TRUE}
+summary(clean_data)
+```
+
+After selecting and modifying my variables I then created 3 data sets, containing identical observations, to be used in different models as detailed below:
 
 | Dataset | Description |
 |----|------------------|
@@ -80,53 +161,7 @@ Based on the available data and the goal of the assignment, I could
 | `clean_data` | Dataframe containing both numerical and factor type variables with the dependent variable `review_stars` as a numerical type. To be used for OLS and regression tree models |
 | `categorical_data` | Same as `clean_data` but `review_stars` is converted to a factor type. To be used for randomly generated reviews and classification tree models |
 
-
-
-
-| Variable | Type (`clean_data`) | Description |
-|:--:|:--:|---------------|
-| `useful.x` | Numeric |  |
-| `funny.x` | Numeric |  |
-| `cool.x` | Numeric |  |
-| `review_count.x` | Numeric |  |
-| `useful.y` | Numeric |  |
-| `funny.y` | Numeric |  |
-| `cool.y` | Numeric |  |
-| `elite` | Numeric |  |
-| `friends` | Numeric |  |
-| `fans` | Numeric |  |
-| `average_stars` | Numeric |  |
-| `compliment_hot` | Numeric |  |
-| `compliment_more` | Numeric |  |
-| `compliment_profile` | Numeric |  |
-| `compliment_cute` | Numeric |  |
-| `compliment_list` | Numeric |  |
-| `compliment_note` | Numeric |  |
-| `compliment_plain` | Numeric |  |
-| `compliment_cool` | Numeric |  |
-| `compliment_funny` | Numeric |  |
-| `compliment_writer` | Numeric |  |
-| `compliment_photos` | Numeric |  |
-| `state` | Factor(14 levels)  |  |
-| `stars.y` | Numeric |  |
-| `review_count.y` | Numeric |  |
-| `is_open` | Numeric |  |
-| `account_age` | Numeric |  |
-| `review_year` | Factor (18 levels) |  |
-| `review_month` | Factor (12 levels) |  |
-| `review_day_of_week` | Factor (7 levels) |  |
-| `review_stars` | Numeric |  |
-
-
-
-
-
-
-
-Many of these changes to the variables were made iteratively
-- keeping variables with >50% 0 values
-- removed some state observations
-- 
+I regularly revisited and refined the data preparation stage, making adjustments to the dataframe as I gained new insights in subsequent stages. This included re-adding variables that had previously been removed. I originally removed variables that contained more than 50% entries with the value 0, however, I later added these variables back into the dataframe, which resulted in more accurate predictions. I also removed some observations after noticing that the coefficients on state variables differed greatly and subsequently discovering that seven of the states only contained one or two reviews.
 
 #### Number of Reviews by State
 
@@ -136,18 +171,8 @@ transposed_state_counts <- t(state_counts)
 kable(transposed_state_counts)
 ```
 
-- examined numeric_df - weekdays had automatically been converted to polynomical contrast and month and year were kept as treatment
-- tried different combinations to determine which combination had yielded the greatest predictive power
+Finally, while examining the `numeric_df`, I found that the variable `review_day_of_week` was automatically encoded using a polynomial contrast, whereas `review_month` and `review_year` defaulted to treatment (dummy) contrasts. After experimenting with various combinations, I discovered that the optimal approach for maximizing predictive accuracy involved using polynomial contrasts for both `review_day_of_week` and `review_month`, while retaining a treatment contrast for `review_year`. 
 
-
-| Contrasts | Ridge Test MSE | LASSO Test MSE |
-|--------|:---------:|:---------:|
-| Treatment (dummy) for `review_day_of week`, `review_month`, `review_year` | 0.54380164 | 0.5415141 |
-| Polynomial for `review_day_of week`, treatment for `review_month` and `review_year` | 0.5437694 | 0.5414782 |
-| <span style="color:blue">Polynomial for `review_day_of week` and `review_month`, treatment for `review_year`</span> | 0.54377904 | <span style="color:blue">0.54139661</span> |
-| Polynomial for `review_day_of week`,`review_month` and `review_year` | 0.5437798 | 0.5416604 |
-
-- Based on the results I went with the third option as this had the lowest MSE (LASSO)
 
 ## Modeling
 
@@ -168,22 +193,31 @@ $\hat{\beta}^{LASSO} = \arg\min_{\beta} \left\{ \sum_{i=1}^{n} (y_i - x_i^T\beta
 #### MSE Evaluation
 | Model | Training MSE | Test MSE |
 |:--------:|:---------:|:---------:|
-| OLS | 1.176837 | 1.183622 |
-| Ridge | 0.5398293 | 0.5437694 |
-| <span style="color:blue">LASSO</span> | <span style="color:blue">0.5388094</span> | <span style="color:blue">0.5414782</span> |
+| <span style="color:blue">OLS</span> | <span style="color:blue">1.176837</span> | <span style="color:blue">1.183622</span> |
+| Ridge | 1.180249 | 1.188901 |
+| LASSO | 1.177757 | 1.183692 |
 | Regression tree | 1.313129 | 1.313515 |
 |Randomly generated| 4.723367 | 4.6496 |
+| Rounded Ridge | 1.260562 | 1.2726 |
+| Rounded Lasso | 1.258968 | 1.2666 |
 
 #### Prediction Accuracy Evaluation
 | Model | Training Accuracy | Test Accuracy |
 |:--------:|:---------:|:---------:|
 | Randomly generated | 0.2006618 | 0.203 |
 |Classification tree| 0.5503822 | 0.5523 |
-
-
+| Rounded Ridge | 0.385501 | 0.5523 |
+| Rounded Lasso | 0.3895882 |  |
 
 
 
 
 ## Deployment
+
+
+## Potential Improvements
+- sentiment analysis could be very powerful in prediction given the context
+- given I had more computing power, ADA boost + random forest
+
+## Challenges
 
