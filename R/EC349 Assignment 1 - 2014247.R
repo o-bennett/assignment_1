@@ -84,7 +84,7 @@ merged_data_useful$review_stars <- merged_data_useful$stars.x
 
 # Removing last variables that won't be used in prediction
 clean_data <- merged_data_useful %>% 
-  select(-c(date, yelping_since, stars.x, categories))
+  select(-c(date, yelping_since, stars.x, categories, compliment_funny))
 
 # Removing states with few reviews (<2)
 state_counts <- table(merged_data_useful$state)
@@ -97,10 +97,7 @@ clean_data$state <- factor(clean_data$state)
 
 
 # Converting factor variables to numerical for ridge/lasso
-numeric_df <- model.matrix(~ . - 1, data = clean_data, 
-                           contrasts = list(review_day_of_week = "contr.poly",
-                                            review_month = "contr.poly",
-                                            review_year = "contr.treatment"))
+numeric_df <- model.matrix(~ . - 1, data = clean_data)
 
 # Split numerical data into test and training for Ridge and LASSO
 set.seed(1)
@@ -109,10 +106,10 @@ ridge_train <- numeric_df[train,]
 ridge_test <- numeric_df[-train,]
 
 # Separate predictors and target variable
-ridgex_train <- ridge_train[,-75]
-ridgey_train <- ridge_train[,75]
-ridgex_test <- ridge_test[,-75]
-ridgey_test <- ridge_test[,75]
+ridgex_train <- ridge_train[,-74]
+ridgey_train <- ridge_train[,74]
+ridgex_test <- ridge_test[,-74]
+ridgey_test <- ridge_test[,74]
 
 # Standardise only the predictor variables
 mean_ridgex_train <- apply(ridgex_train, 2, mean)
@@ -176,12 +173,12 @@ rounded_LASSO_train_accuracy <- mean(rounded_LASSO_train_pred == ridgey_train)
 
 # Split clean_data into test and training for OLS and trees
 OLS_train <- clean_data[train,]
-OLSx_train <- OLS_train[,-31]
-OLSy_train <- OLS_train[,31]
+OLSx_train <- OLS_train[,-30]
+OLSy_train <- OLS_train[,30]
 
 OLS_test <- clean_data[-train,]
-OLSx_test <- OLS_test[,-31]
-OLSy_test <- OLS_test[,31]
+OLSx_test <- OLS_test[,-30]
+OLSy_test <- OLS_test[,30]
 
 # OLS
 lm_review <- lm(review_stars ~ ., data = OLS_train)
@@ -202,12 +199,12 @@ categorical_data$review_stars <- factor(categorical_data$review_stars)
 
 # Split categorical data into test and training
 categorical_train <- categorical_data[train,]
-categoricalx_train <- categorical_train[,-31]
-categoricaly_train <- categorical_train[,31]
+categoricalx_train <- categorical_train[,-30]
+categoricaly_train <- categorical_train[,30]
 
 categorical_test <- categorical_data[-train,]
-categoricalx_test <- categorical_test[,-31]
-categoricaly_test <- categorical_test[,31]
+categoricalx_test <- categorical_test[,-30]
+categoricaly_test <- categorical_test[,30]
 
 # Randomly generated
 set.seed(2)
@@ -236,9 +233,3 @@ class_tree_accuracy <- sum(class_tree_predict == categoricaly_test)/10000
 
 class_tree_train_predict <- predict(class_tree, categoricalx_train, type = 'class')
 class_tree_train_accuracy <- sum(class_tree_train_predict == categoricaly_train) / length(categoricaly_train)
-
-
-
-
-
-

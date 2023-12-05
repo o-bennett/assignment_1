@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r source, echo = FALSE, message = FALSE, results = 'hide', warning = FALSE, cache = TRUE}
 source("C:R/EC349 Assignment 1 - 2014247.R")
 ```
+#### Word Count (excluding tables): 1210
 
 ## Tabula statement
 
@@ -66,24 +67,13 @@ In this assignment, I chose to follow the Cross-Industry Standard Process for Da
     <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/CRISP-DM_Process_Diagram.png" width="400" />
 </p>
 
-
-
 ## Business Understanding
 
-[yelp.com](yelp.com) is a website that publishes crowd-sourced reviews about businesses. This project aims to use information on users, reviews, and businesses on [yelp.com](yelp.com) to predict how users like different establishments. The goal of this project is to create a model that accuratly predicts the number of stars that reviews gave and I will follow the six stages of the CRISP-DM methodology to achieve this.
+[yelp.com](yelp.com) is a website that publishes crowd-sourced reviews about businesses. This project aims to use information on users, reviews, and businesses on [yelp.com](yelp.com) to predict how users like different establishments. The goal of this project is to create a model that accurately predicts the number of stars that reviews gave, and I will follow the stages of the CRISP-DM methodology to achieve this.
 
 ## Data Understanding
 
-A strong understanding of the available data is crucial in identifying which variables are relevant for prediction, assessing the quality of data, and guiding the selection of the most appropriate modelling techniques. 5 data sets were provided for this assignment: data on the businesses, user reviews, user “check-ins”, users and user tips. Using information available on the datasets from the [Yelp website]( https://www.yelp.com/dataset/documentation/main), I identified that only the datasets on businesses, user reviews, and users would be necessary for predicting reviews, and I merged these datasets into one dataframe `merged_data`. Using this dataframe I was able to gain insights into the available data, such as the number of observations.
-
-#### Number of Observations
-
-```{r , echo = FALSE, cache = TRUE}
-num_observations <- nrow(merged_data)
-print(num_observations)
-```
-
-I was also able to perform visualisation techniques to view characteristics such as the distribution of reviews.
+A strong understanding of the available data is crucial in identifying which variables are relevant for prediction, assessing the quality of data, and guiding the selection of the most appropriate modelling techniques. 5 data sets were provided for this assignment: data on the businesses, user reviews, user “check-ins”, users and user tips. Using information available on the datasets from the [Yelp website]( https://www.yelp.com/dataset/documentation/main), I identified that only the datasets on businesses, user reviews, and users would be necessary for predicting reviews, and I merged these datasets into one dataframe `merged_data`. Using this dataframe I was able to perform visualisation techniques to view characteristics of the data set, such as the distribution of reviews.
 
 #### Distribution of Reviews
 
@@ -96,20 +86,21 @@ axis(1, at = 1:5, labels = 1:5)
 
 By further consulting the [Yelp website]( https://www.yelp.com/dataset/documentation/main) and analysing the `merged_data` dataframe, I was also able to gain a deeper understanding of the available variables.
 
-#### Column Names
-
-```{r column names, echo = FALSE, cache = TRUE}
-column_names <- colnames(merged_data)
-print(column_names)
+#### Variables in `merged_data`
+  
+```{r , echo = FALSE, cache = TRUE}
+glimpse(merged_data)
 ```
 
-Based on the available data and the predictive goal of the assignment, I chose to create OLS, Ridge, LASSO, regression tree and classification tree models. The use of a classification tree model makes the most sense as the number of stars in a review is categorical - users can only give a whole number of stars from 1-5. However, the other models can also be used as the number of stars is still a numerical variable.
+Based on the available data and the predictive goal of the assignment, I chose to create OLS, Ridge, LASSO, regression tree and classification tree models. The use of a classification tree model makes the most sense as the number of stars in a review is categorical - users can only give a whole number of stars from 1-5. However, the other models can also be used as the number of stars is a numerical variable.
 
 ## Data Preparation
 
 When preparing the data for modelling, I removed several variables including string type variables such as `business.id`, `name.x` and `text`, as my models would only work if the variables were either numerical or factor type. I then removed variables such as `city` and `categories`, as while these could be converted to factor types, when I did so they had very high levels (1000+ and 48000+ respectively) and so would not be useful in predictive models. In addition, I removed variables which had a high percentage of *NA* observations (>50%) as these also would not be useful in prediction. 
 
-I also modified certain variables so that they could be used in the predictive models. Using the 'lubridate' package on the string type `date` variable, I created factor variables for the year, month and day of the week that the reviews were written. From the `yelping_since` variable, I also calculated the number of days between the account being created and the review written and deleted observations with a negative number of days, as this would obviously be due to a error. Finally, I converted `state` to a factor variable. After these changes I was left with a `clean_data` dataframe that contained 31 unique variables, as seen below:
+I also modified several variables so that they could be used in the predictive models. This included Using the ‘lubridate’ package on the string type date variable to create factor variables for the year, month and day of the week that the reviews were written.
+
+After these changes I was left with a `clean_data` dataframe that contained 30 unique variables, as seen below:
 
 #### Variables Description
 
@@ -134,7 +125,6 @@ I also modified certain variables so that they could be used in the predictive m
 | `compliment_note` | Numeric (integer) | Number of note compliments received by the user |
 | `compliment_plain` | Numeric (integer) | Number of plain compliments received by the user |
 | `compliment_cool` | Numeric (integer) | Number of cool compliments received by the user |
-| `compliment_funny` | Numeric (integer) | Number of funny compliments received by the user |
 | `compliment_writer` | Numeric (integer) | Number of writer compliments received by the user |
 | `compliment_photos` | Numeric (integer) | Number of photo compliments received by the user |
 | `state` | Factor(14 levels) | State that the business is located in |
@@ -161,7 +151,7 @@ After selecting and modifying my variables I then created 3 data sets, containin
 | `clean_data` | Dataframe containing both numerical and factor type variables with the dependent variable `review_stars` as a numerical type. To be used for OLS and regression tree models |
 | `categorical_data` | Same as `clean_data` but `review_stars` is converted to a factor type. To be used for randomly generated reviews and classification tree models |
 
-I regularly revisited and refined the data preparation stage, making adjustments to the dataframe as I gained new insights in subsequent stages. This included re-adding variables that had previously been removed. I originally removed variables that contained more than 50% entries with the value 0, however, I later added these variables back into the dataframe, which resulted in more accurate predictions. I also removed some observations after noticing that the coefficients on state variables differed greatly and subsequently discovering that seven of the states only contained one or two reviews.
+I regularly revisited and refined the data preparation stage, making adjustments to the dataframe as I gained new insights in subsequent stages. This included removing the variable `compliment_funny`, which was generating *NA* coefficients, and removing some observations from states with few reviews.
 
 #### Number of Reviews by State
 
@@ -171,11 +161,9 @@ transposed_state_counts <- t(state_counts)
 kable(transposed_state_counts)
 ```
 
-Finally, while examining the `numeric_df`, I found that the variable `review_day_of_week` was automatically encoded using a polynomial contrast, whereas `review_month` and `review_year` defaulted to treatment (dummy) contrasts. After experimenting with various combinations, I discovered that the optimal approach for maximizing predictive accuracy involved using polynomial contrasts for both `review_day_of_week` and `review_month`, while retaining a treatment contrast for `review_year`. 
-
-
 ## Modeling
 
+In the modeling phase of the CRISP-DM process, I implemented both Ridge and LASSO regression techniques, as well as Ordinary Least Squares (OLS) to serve as a baseline for comparison. Ridge and LASSO were chosen due to their effectiveness in handling multicollinearity and their regularization capabilities which enhance model performance, especially in scenarios with numerous predictors like this. The inclusion of penalty terms in both Ridge and Lasso helps to reduce overfitting, a common challenge in predictive modeling.
 
 $\hat{\beta}^{OLS} = \arg\min_{\beta} \left\{ \sum_{i=1}^{n} (y_i - x_i^T\beta)^2 \right\}$.
 
@@ -183,41 +171,78 @@ $\hat{\beta}^{Ridge} = \arg\min_{\beta} \left\{ \sum_{i=1}^{n} (y_i - x_i^T\beta
 
 $\hat{\beta}^{LASSO} = \arg\min_{\beta} \left\{ \sum_{i=1}^{n} (y_i - x_i^T\beta)^2 + \lambda \sum_{j=1}^{p} |\beta_j| \right\}$.
 
+For both the Ridge and Lasso regression models, standardization of predictor variables was a crucial step, as these techniques penalize larger coefficients more heavily.
 
+To optimize the models and prevent overfitting, I utilized cross-validation. This technique is critical for assessing the effectiveness of the models and for selecting the optimal value of the lambda parameter that minimises the mean squared error, balancing the trade-off between bias and variance.
 
+#### Ridge Lambda Selection
 
+```{r , echo = FALSE, message = FALSE, results = 'hide', warning = FALSE, cache = TRUE}
+cv.out_ridge <- cv.glmnet(as.matrix(ridgex_train), as.matrix(ridgey_train), alpha = 0, nfolds = 3)
+plot(cv.out_ridge)
+```
+
+#### LASSO Lambda Selection
+
+```{r , echo = FALSE, cache = TRUE}
+cv.out_LASSO <- cv.glmnet(as.matrix(ridgex_train), as.matrix(ridgey_train), alpha = 1, nfolds = 3)
+plot(cv.out_LASSO)
+```
+
+A key characteristic of Lasso is its ability to reduce some coefficients exactly to zero, effectively performing feature selection. We can see this in the graph above, as the number above the graph (indicating the number of variables used in the model) is decreasing as lambda increases in the LASSO model. Ridge regression tends to shrink the coefficients towards zero, but it rarely sets any coefficients exactly to zero and so this is why the numbers above the graph stay constant at 73.
+
+In addition to Ridge and Lasso, I also employed regression and classification trees in my analysis. These trees provide a more intuitive understanding of how the input variables affect the predicted review scores and allow for a non-linear approach to modeling. 
+
+#### Regression Tree
+
+```{r , echo = FALSE, cache = TRUE}
+rpart.plot(reg_tree)
+```
+ 
+#### Classification Tree 
+ 
+```{r , echo = FALSE, cache = TRUE}
+rpart.plot(class_tree)
+```
+ 
+Finally, to establish a benchmark for comparison of prediction accuracy, I generated a set of random reviews.
 
 ## Evaluation
 
+MSE provides a clear numerical value that represents the average of the squares of the errors, essentially quantifying how far the model's predictions are from the actual values. 
 
-#### MSE Evaluation
+$MSE = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$
+
+#### MSE Evaluation for Regressions
 | Model | Training MSE | Test MSE |
 |:--------:|:---------:|:---------:|
 | <span style="color:blue">OLS</span> | <span style="color:blue">1.176837</span> | <span style="color:blue">1.183622</span> |
-| Ridge | 1.180249 | 1.188901 |
-| LASSO | 1.177757 | 1.183692 |
+| Ridge | 1.180266 | 1.18888 |
+| LASSO | 1.178036 | 1.183871 |
 | Regression tree | 1.313129 | 1.313515 |
-|Randomly generated| 4.723367 | 4.6496 |
-| Rounded Ridge | 1.260562 | 1.2726 |
-| Rounded Lasso | 1.258968 | 1.2666 |
 
-#### Prediction Accuracy Evaluation
+
+Prediction accuracy measures the percentage of predictions that the model gets correct.
+
+#### Prediction Accuracy Evaluation for Classification Models
 | Model | Training Accuracy | Test Accuracy |
 |:--------:|:---------:|:---------:|
 | Randomly generated | 0.2006618 | 0.203 |
-|Classification tree| 0.5503822 | 0.5523 |
-| Rounded Ridge | 0.385501 | 0.5523 |
-| Rounded Lasso | 0.3895882 |  |
+| <span style="color:blue">Classification tree</span> | <span style="color:blue">0.5503822</span> | <span style="color:blue">0.5523</span> |
+| Rounded Ridge | 0.3853973 | 0.3838 |
+| Rounded Lasso | 0.3895882 | 0.3885 |
 
+As expected, the classification tree emerged as the top performer among the classification models with a prediction accuracy of 55%. Surprisingly, the OLS model outperformed both Ridge and LASSO in terms of MSE, suggesting a possible lack of multicollinearity and overfitting in our data. This hypothesis is further supported by the near-zero lambda values used in Ridge and LASSO, indicating minimal impact of the regularization term. Additionally, the consistency between training and test MSEs across models corroborates the absence of overfitting, demonstrating effective generalization to new data.
 
+OLS has the added benefit of having interpretable coefficients, which can be seen below:
 
+```{r , echo = FALSE, cache = TRUE}
+summary(lm_review)
+```
 
-## Deployment
-
-
-## Potential Improvements
-- sentiment analysis could be very powerful in prediction given the context
-- given I had more computing power, ADA boost + random forest
+The R-squared value is 0.4617, suggesting that about 46.17% of the variability in review_stars is explained by the model, which is a moderate level of explanatory power.The Adjusted R-squared is almost the same (0.4616), indicating that the number of predictors in the model is reasonable and not excessively inflating the R-squared value.
 
 ## Challenges
+
+I became quite stuck at one point, as I was achieving extremely low MSEs for the Ridge and LASSO models, and I was unsure why. Upon reviewing the `numeric_df` dataset, I realized the predicted variable had been inadvertently standardized along with the predictors. Correcting this by removing the relevant line in my code resolved the issue.
 
